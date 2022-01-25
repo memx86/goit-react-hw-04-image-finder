@@ -1,3 +1,3 @@
-# goit-react-hw-00
+# goit-react-hw-03-image-finder
 
-React homework 00 https://memx86.github.io/goit-react-hw-00/
+React homework 03 https://memx86.github.io/goit-react-hw-03-image-finder/
