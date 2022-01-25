@@ -1,21 +1,22 @@
 .form {
   padding: 1rem;
   display: flex;
+  justify-content: center;
   align-items: baseline;
   gap: 1rem;
   border: 1px solid #0080ff;
   border-radius: 10px;
 }
 .label {
-  width: 100%;
+  min-width: 188px;
+  width: 50%;
   font-size: 1.5rem;
 }
 .input {
   display: block;
+  width: 90%;
   margin-top: 0.5rem;
   padding: 0.5rem;
-  min-width: 200px;
-  width: 50%;
   border: 1px solid transparent;
   background-color: #fff;
   border-radius: 10px;

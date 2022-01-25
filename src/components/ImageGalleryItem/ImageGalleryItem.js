@@ -1,4 +1,6 @@
+import PropTypes from "prop-types";
 import s from "./ImageGalleryItem.module.css";
+
 export default function ImageGalleryItem({ image }) {
   const { webformatURL, largeImageURL, tags } = image;
   return (
@@ -7,3 +9,6 @@ export default function ImageGalleryItem({ image }) {
     </li>
   );
 }
+ImageGalleryItem.propTypes = {
+  image: PropTypes.object.isRequired,
+};

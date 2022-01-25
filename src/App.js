@@ -1,10 +1,10 @@
 import { Component, Fragment } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import Section from "components/Section";
-import Container from "components/Container";
-import SearchForm from "components/SearchForm";
-import ImageGallery from "components/ImageGallery";
+import Section from "./components/Section";
+import Container from "./components/Container";
+import SearchForm from "./components/SearchForm";
+import ImageGallery from "./components/ImageGallery";
 
 class App extends Component {
   state = {

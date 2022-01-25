@@ -1,6 +1,9 @@
 .list {
-  padding: 0 1rem;
+  padding: 0 1rem 1rem 1rem;
   display: grid;
   gap: 1rem;
-  grid-template-columns: repeat(4, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(288px, 1fr));
+}
+.error {
+  text-align: center;
 }
