@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import ImageGalleryItem from "components/ImageGalleryItem";
 import Button from "components/Button";
+import Loader from "components/Loader";
 import PixabayApiService from "js/PixabayApiService";
 import s from "./ImageGallery.module.css";
 
@@ -79,7 +80,7 @@ export default class ImageGallery extends Component {
 
     if (status === "idle") return <div></div>;
 
-    if (status === "loading") return <div></div>;
+    if (status === "loading") return <Loader />;
 
     if (status === "error") {
       return (
@@ -97,6 +98,7 @@ export default class ImageGallery extends Component {
               <ImageGalleryItem key={image.id} image={image} />
             ))}
           </ul>
+          {more && <Loader />}
           {!more && (
             <Button
               type="button"
