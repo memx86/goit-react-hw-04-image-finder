@@ -12,6 +12,7 @@ const pixabayApiService = new PixabayApiService();
 export default class ImageGallery extends Component {
   static propTypes = {
     query: PropTypes.string.isRequired,
+    onImageClick: PropTypes.func.isRequired,
   };
   state = {
     images: [],
@@ -87,7 +88,7 @@ export default class ImageGallery extends Component {
   };
   render() {
     const { status, images, error, more } = this.state;
-    const { query } = this.props;
+    const { query, onImageClick } = this.props;
 
     if (status === "idle") return <div></div>;
 
@@ -106,7 +107,11 @@ export default class ImageGallery extends Component {
         <Fragment>
           <ul className={s.list} id="gallery">
             {images.map((image) => (
-              <ImageGalleryItem key={image.id} image={image} />
+              <ImageGalleryItem
+                key={image.id}
+                image={image}
+                onClick={onImageClick}
+              />
             ))}
           </ul>
           {more && <Loader />}
