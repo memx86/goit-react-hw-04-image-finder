@@ -38,6 +38,7 @@ export default class ImageGallery extends Component {
       console.log(error);
     }
     this.setState({ more: false });
+    setTimeout(this.scrollCard, 500);
   };
   onSuccess = (response) => {
     const totalHits = response.totalHits;
@@ -74,6 +75,16 @@ export default class ImageGallery extends Component {
     toast.error(errorMsg);
     this.setState({ error: errorMsg });
   };
+  scrollCard = () => {
+    const { height: cardHeight } = document
+      .querySelector("#gallery")
+      .firstElementChild.getBoundingClientRect();
+
+    window.scrollBy({
+      top: cardHeight * 3,
+      behavior: "smooth",
+    });
+  };
   render() {
     const { status, images, error, more } = this.state;
     const { query } = this.props;
@@ -93,7 +104,7 @@ export default class ImageGallery extends Component {
     if (status === "success") {
       return (
         <Fragment>
-          <ul className={s.list}>
+          <ul className={s.list} id="gallery">
             {images.map((image) => (
               <ImageGalleryItem key={image.id} image={image} />
             ))}
