@@ -6,12 +6,12 @@ function IconButton({ type = "button", icon }) {
   switch (icon) {
     case "search":
       return (
-        <button type={type} className={s.search}>
+        <button type={type} className={s.search} aria-label="search">
           <AiOutlineSearch style={{ width: "40" }} />
         </button>
       );
     default:
-      return <button type={type}></button>;
+      return <button type={type} aria-label="button"></button>;
   }
 }
 
