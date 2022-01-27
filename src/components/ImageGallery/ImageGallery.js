@@ -30,16 +30,21 @@ export default class ImageGallery extends Component {
     }
   }
   getImages = async (query) => {
+    const { error } = this.state;
+
+    if (error) {
+      this.setState({ status: "loading", error: "" });
+    }
     this.setState({ more: true });
     pixabayApiService.query = query;
     try {
       const response = await pixabayApiService.getImages();
       this.onSuccess(response);
-    } catch (error) {
-      console.log(error);
+    } catch (response) {
+      this.onError(response);
     }
     this.setState({ more: false });
-    setTimeout(this.scrollCard, 500);
+    if (!this.state.error) setTimeout(this.scrollCard, 500);
   };
   onSuccess = (response) => {
     const totalHits = response.totalHits;
@@ -115,7 +120,7 @@ export default class ImageGallery extends Component {
             ))}
           </ul>
           {more && <Loader />}
-          {!more && (
+          {!more && !error && (
             <Button
               type="button"
               text="Load more"
