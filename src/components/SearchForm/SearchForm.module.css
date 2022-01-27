@@ -8,15 +8,24 @@
   border-radius: 10px;
 }
 .label {
+  position: relative;
   min-width: 188px;
   width: 50%;
   font-size: 1.5rem;
+}
+.btn {
+  position: absolute;
+  top: 7px;
+  left: 0;
+  width: 36px;
+  height: 36px;
 }
 .input {
   display: block;
   width: 90%;
   margin-top: 0.5rem;
   padding: 0.5rem;
+  padding-left: 30px;
   border: 1px solid transparent;
   background-color: #fff;
   border-radius: 10px;
@@ -26,26 +35,4 @@
 .input:not(:placeholder-shown) {
   border-color: #0066cc;
   outline: none;
-}
-.btn {
-  padding: 0.5rem;
-  min-width: 100px;
-  min-height: 40px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: #fff;
-  color: #0080ff;
-  transition: color 250ms linear, background-color 250ms linear,
-    border-color 250ms linear;
-}
-.btn:hover,
-.btn:focus {
-  outline: none;
-  background-color: transparent;
-  color: #fff;
-  border-color: #fff;
 }

@@ -1,6 +1,7 @@
 import { Component } from "react";
 import PropTypes from "prop-types";
 import s from "./SearchForm.module.css";
+import IconButton from "components/IconButton";
 
 class ContactForm extends Component {
   static propTypes = {
@@ -29,10 +30,10 @@ class ContactForm extends Component {
     const { query } = this.state;
     return (
       <form className={s.form} onSubmit={this.handleSubmit}>
-        <button className={s.btn} type="submit">
-          Search
-        </button>
         <label className={s.label}>
+          <span className={s.btn}>
+            <IconButton type="submit" icon="search" />
+          </span>
           <input
             className={s.input}
             type="text"
