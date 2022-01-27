@@ -38,7 +38,7 @@ class ContactForm extends Component {
             className={s.input}
             type="text"
             name="query"
-            placeholder=" "
+            placeholder="Search images and photos"
             required
             value={query}
             onInput={this.handleInputChange}
