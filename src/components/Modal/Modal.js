@@ -1,32 +1,32 @@
-import { Component } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import s from "./Modal.module.css";
 
-class Modal extends Component {
-  static propTypes = {
-    closeModal: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired,
-  };
-  componentDidMount() {
-    document.addEventListener("keydown", this.onEsc);
+function Modal({ children, closeModal }) {
+  useEffect(() => {
+    document.addEventListener("keydown", onEsc);
+    return () => {
+      document.removeEventListener("keydown", onEsc);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function onEsc(e) {
+    if (e.code === "Escape") closeModal();
   }
-  componentWillUnmount() {
-    document.removeEventListener("keydown", this.onEsc);
-  }
-  onEsc = (e) => {
-    if (e.code === "Escape") this.props.closeModal();
+  const onBackdropClick = (e) => {
+    if (e.target === e.currentTarget) closeModal();
   };
-  onBackdropClick = (e) => {
-    if (e.target === e.currentTarget) this.props.closeModal();
-  };
-  render() {
-    const { children } = this.props;
-    return (
-      <div className={s.backdrop} onClick={this.onBackdropClick}>
-        <div className={s.modal}>{children}</div>
-      </div>
-    );
-  }
+
+  return (
+    <div className={s.backdrop} onClick={onBackdropClick}>
+      <div className={s.modal}>{children}</div>
+    </div>
+  );
 }
+Modal.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 export default Modal;
