@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { useEffect, useReducer } from "react";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import Section from "components/Section";
@@ -9,49 +9,63 @@ import PixabayApiService from "js/PixabayApiService";
 import s from "./Gallery.module.css";
 
 const pixabayApiService = new PixabayApiService();
-
-class Gallery extends Component {
-  static propTypes = {
-    query: PropTypes.string.isRequired,
-    onImageClick: PropTypes.func.isRequired,
-  };
-  state = {
-    images: [],
-    status: "idle",
-    error: "",
-    more: false,
-  };
-  componentDidUpdate(prevProps, prevState) {
-    const prevQuery = prevProps.query;
-    const query = this.props.query;
-    if (prevQuery !== query) {
-      this.setState({ images: [] });
-      pixabayApiService.resetPage();
-      this.getImages(query);
-    }
+const initialState = {
+  images: [],
+  status: "idle",
+  error: "",
+  more: false,
+};
+function reducer(state, action) {
+  const { type, payload } = action;
+  const { images } = state;
+  switch (type) {
+    case "status":
+      return { ...state, status: payload };
+    case "images":
+      return { ...state, images: [...images, ...payload] };
+    case "clear":
+      return { ...state, images: [] };
+    case "error":
+      return { ...state, error: payload };
+    case "more":
+      return { ...state, more: payload };
+    default:
+      throw new Error(`Unsupported action type: ${type}`);
   }
-  getImages = async (query) => {
-    const { error } = this.state;
+}
 
+function Gallery({ query, onImageClick }) {
+  const [state, dispatch] = useReducer(reducer, {}, () => initialState);
+  const { status, images, error, more } = state;
+  useEffect(() => {
+    if (!query) return;
+    dispatch({ type: "clear" });
+    pixabayApiService.resetPage();
+    getImages(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
+  async function getImages(query) {
     if (error) {
-      this.setState({ status: "loading", error: "" });
+      dispatch({ type: "status", payload: "loading" });
+      dispatch({ type: "error", payload: "" });
     }
-    this.setState({ more: true });
+    dispatch({ type: "more", payload: true });
     pixabayApiService.query = query;
     try {
       const response = await pixabayApiService.getImages();
-      this.onSuccess(response);
+      onSuccess(response);
     } catch (response) {
-      this.onError(response);
+      onError(response);
     }
-    this.setState({ more: false });
-    if (!this.state.error) setTimeout(this.scrollCard, 500);
-  };
-  onSuccess = (response) => {
+    dispatch({ type: "more", payload: false });
+  }
+  const onSuccess = (response) => {
     const totalHits = response.totalHits;
     if (!totalHits) {
       const error = "Can't find image";
-      this.setState({ status: "error", error });
+      dispatch({ type: "status", payload: "error" });
+      dispatch({ type: "error", payload: error });
       return;
     }
 
@@ -61,28 +75,28 @@ class Gallery extends Component {
       const error =
         "We're sorry, but you've reached the end of search results.";
       toast.error(error);
-      this.setState({ error });
+      dispatch({ type: "status", payload: "error" });
+      dispatch({ type: "error", payload: error });
       return;
     }
 
     if (pixabayApiService.page === 2) {
       toast.success(`We found ${totalHits} images!`);
     }
-
-    this.setState((prevState) => {
-      const images = [...prevState.images, ...newImages];
-      return { status: "success", images };
-    });
+    dispatch({ type: "images", payload: newImages });
+    dispatch({ type: "status", payload: "success" });
+    if (!error) setTimeout(scrollCard, 500);
   };
-  onError = (error) => {
+  const onError = (error) => {
     const errorMsg =
       error.response.status === 400
         ? "We're sorry, but you've reached the end of search results."
         : "Sorry, there is no response from server. Please try again.";
     toast.error(errorMsg);
-    this.setState({ error: errorMsg });
+    dispatch({ type: "status", payload: "error" });
+    dispatch({ type: "error", payload: errorMsg });
   };
-  scrollCard = () => {
+  function scrollCard() {
     const { height: cardHeight } = document
       .querySelector("#gallery")
       .firstElementChild.getBoundingClientRect();
@@ -91,40 +105,36 @@ class Gallery extends Component {
       top: cardHeight * 3,
       behavior: "smooth",
     });
-  };
-  render() {
-    const { status, images, error, more } = this.state;
-    const { query, onImageClick } = this.props;
+  }
 
-    if (status === "idle") return <div></div>;
+  if (status === "idle") return <div></div>;
 
-    if (status === "loading") return <Loader />;
+  if (status === "loading") return <Loader />;
 
-    if (status === "error") {
-      return (
-        <p className={s.error}>
-          {error}: {query}
-        </p>
-      );
-    }
+  if (status === "error") {
+    return (
+      <p className={s.error}>
+        {error}: {query}
+      </p>
+    );
+  }
 
-    if (status === "success") {
-      return (
-        <Section>
-          <ImageGallery images={images} onImageClick={onImageClick} />
-          {more && <Loader />}
-          {!more && !error && (
-            <Button
-              type="button"
-              text="Load more"
-              className="center"
-              query={query}
-              onClick={this.getImages}
-            />
-          )}
-        </Section>
-      );
-    }
+  if (status === "success") {
+    return (
+      <Section>
+        <ImageGallery images={images} onImageClick={onImageClick} />
+        {more && <Loader />}
+        {!more && !error && (
+          <Button
+            type="button"
+            text="Load more"
+            className="center"
+            query={query}
+            onClick={getImages}
+          />
+        )}
+      </Section>
+    );
   }
 }
 
