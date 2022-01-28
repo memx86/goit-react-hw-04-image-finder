@@ -1,51 +1,44 @@
-import { Component } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import s from "./SearchForm.module.css";
 import IconButton from "components/IconButton";
 
-class ContactForm extends Component {
-  static propTypes = {
-    onFormSubmit: PropTypes.func.isRequired,
-  };
-  state = {
-    query: "",
-  };
-  handleInputChange = (e) => {
+function SearchForm({ onFormSubmit }) {
+  const [query, setQuery] = useState("");
+  const handleInputChange = (e) => {
     const value = e.target.value;
-    this.setState({ query: value });
+    setQuery(value);
   };
-  handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const { onFormSubmit } = this.props;
     const query = e.target.query.value;
     onFormSubmit(query);
-    this.reset();
+    reset();
   };
-  reset = () =>
-    this.setState(() => ({
-      query: "",
-    }));
+  const reset = () => setQuery("");
 
-  render() {
-    const { query } = this.state;
-    return (
-      <form className={s.form} onSubmit={this.handleSubmit}>
-        <label className={s.label}>
-          <span className={s.btn}>
-            <IconButton type="submit" icon="search" />
-          </span>
-          <input
-            className={s.input}
-            type="text"
-            name="query"
-            placeholder="Search images and photos"
-            required
-            value={query}
-            onInput={this.handleInputChange}
-          />
-        </label>
-      </form>
-    );
-  }
+  return (
+    <form className={s.form} onSubmit={handleSubmit}>
+      <label className={s.label}>
+        <span className={s.btn}>
+          <IconButton type="submit" icon="search" />
+        </span>
+        <input
+          className={s.input}
+          type="text"
+          name="query"
+          placeholder="Search images and photos"
+          required
+          value={query}
+          onInput={handleInputChange}
+        />
+      </label>
+    </form>
+  );
 }
-export default ContactForm;
+
+SearchForm.propTypes = {
+  onFormSubmit: PropTypes.func.isRequired,
+};
+
+export default SearchForm;
