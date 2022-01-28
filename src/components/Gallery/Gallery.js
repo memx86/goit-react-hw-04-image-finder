@@ -75,7 +75,6 @@ function Gallery({ query, onImageClick }) {
       const error =
         "We're sorry, but you've reached the end of search results.";
       toast.error(error);
-      dispatch({ type: "status", payload: "error" });
       dispatch({ type: "error", payload: error });
       return;
     }
@@ -93,7 +92,6 @@ function Gallery({ query, onImageClick }) {
         ? "We're sorry, but you've reached the end of search results."
         : "Sorry, there is no response from server. Please try again.";
     toast.error(errorMsg);
-    dispatch({ type: "status", payload: "error" });
     dispatch({ type: "error", payload: errorMsg });
   };
   function scrollCard() {
