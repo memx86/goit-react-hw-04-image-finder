@@ -1,10 +1,8 @@
 import { Component, Fragment } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import Section from "./components/Section";
-import Container from "./components/Container";
-import SearchForm from "./components/SearchForm";
-import ImageGallery from "./components/ImageGallery";
+import Search from "components/Search";
+import Gallery from "components/Gallery";
 import Modal from "components/Modal";
 
 class App extends Component {
@@ -28,14 +26,8 @@ class App extends Component {
     const { src, alt } = image;
     return (
       <Fragment>
-        <Section type="search">
-          <Container>
-            <SearchForm onFormSubmit={this.onSearch} />
-          </Container>
-        </Section>
-        <Section>
-          <ImageGallery query={query} onImageClick={this.onImageOpen} />
-        </Section>
+        <Search onFormSubmit={this.onSearch} />
+        <Gallery query={query} onImageClick={this.onImageOpen} />
         {showModal && (
           <Modal closeModal={this.closeModal}>
             <img src={src} alt={alt} />
