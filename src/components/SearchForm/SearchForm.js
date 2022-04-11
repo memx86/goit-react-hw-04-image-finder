@@ -17,7 +17,7 @@ function SearchForm({ onFormSubmit }) {
   const reset = () => setQuery("");
 
   return (
-    <form className={s.form} onSubmit={handleSubmit}>
+    <form className={s.form} onSubmit={handleSubmit} autoComplete="off">
       <label className={s.label}>
         <span className={s.btn}>
           <IconButton type="submit" icon="search" />
