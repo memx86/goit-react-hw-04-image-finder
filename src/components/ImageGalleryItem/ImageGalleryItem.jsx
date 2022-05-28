@@ -1,16 +1,14 @@
 import PropTypes from "prop-types";
 import s from "./ImageGalleryItem.module.css";
 
-export default function ImageGalleryItem({ image, onClick }) {
+export default function ImageGalleryItem({ image, onImageClick }) {
   const { webformatURL, largeImageURL, tags } = image;
+  const onClick = () => {
+    onImageClick({ largeImageURL, tags });
+  };
   return (
     <li className={s.item} onClick={onClick}>
-      <img
-        className={s.img}
-        src={webformatURL}
-        alt={tags}
-        data-src={largeImageURL}
-      />
+      <img className={s.img} src={webformatURL} alt={tags} />
     </li>
   );
 }
@@ -20,5 +18,5 @@ ImageGalleryItem.propTypes = {
     largeImageURL: PropTypes.string.isRequired,
     tags: PropTypes.string.isRequired,
   }).isRequired,
-  onClick: PropTypes.func.isRequired,
+  onImageClick: PropTypes.func.isRequired,
 };

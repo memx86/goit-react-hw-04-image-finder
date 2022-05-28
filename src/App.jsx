@@ -10,10 +10,7 @@ function App() {
   const [image, setImage] = useState({});
   const [showModal, setShowModal] = useState(false);
 
-  const onImageOpen = (e) => {
-    const src = e.target.dataset.src;
-    const alt = e.target.alt;
-    const image = { src, alt };
+  const onImageOpen = (image) => {
     setImage(image);
     setShowModal(true);
   };
@@ -21,14 +18,14 @@ function App() {
     setShowModal(false);
   };
 
-  const { src, alt } = image;
+  const { largeImageURL, tags } = image;
   return (
     <Fragment>
       <Search onFormSubmit={setQuery} />
       <Gallery query={query} onImageClick={onImageOpen} />
       {showModal && (
         <Modal closeModal={closeModal}>
-          <img src={src} alt={alt} />
+          <img src={largeImageURL} alt={tags} />
         </Modal>
       )}
       <ToastContainer

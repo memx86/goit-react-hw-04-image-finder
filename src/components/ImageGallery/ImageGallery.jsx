@@ -6,7 +6,11 @@ export default function ImageGallery({ images, onImageClick }) {
   return (
     <ul className={s.list} id="gallery">
       {images.map((image) => (
-        <ImageGalleryItem key={image.id} image={image} onClick={onImageClick} />
+        <ImageGalleryItem
+          key={image.id}
+          image={image}
+          onImageClick={onImageClick}
+        />
       ))}
     </ul>
   );
